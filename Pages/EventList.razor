@@ -1,0 +1,19 @@
+@page "/events"
+@inject EventService EventService
+
+<h2>Upcoming Events</h2>
+
+<Virtualize Items="@events" ItemSize="100">
+    <ItemContent>
+        @(evt => <EventCard Event="evt" />)
+    </ItemContent>
+</Virtualize>
+
+@code {
+    private List<EventModel> events = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await EventService.GetEventsAsync();
+    }
+}
