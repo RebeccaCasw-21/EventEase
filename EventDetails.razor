@@ -1,0 +1,18 @@
+@page "/events/{id:int}"
+@inject EventService EventService
+
+<h3>@event?.Name</h3>
+<p>Date: @event?.Date.ToShortDateString()</p>
+<p>Location: @event?.Location</p>
+
+<a href="/register/@event?.Id">Register Now</a>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Event event;
+
+    protected override async Task OnInitializedAsync()
+    {
+        event = await EventService.GetEventByIdAsync(Id);
+    }
+}
