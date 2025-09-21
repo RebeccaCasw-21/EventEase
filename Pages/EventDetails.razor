@@ -1,0 +1,36 @@
+@page "/events/{Id:int}"
+@inject EventService EventService
+@inject NavigationManager NavigationManager
+@inject UserSessionService Session
+
+<h2>Event Details</h2>
+
+@if (event == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p><strong>Name:</strong> @event.Name</p>
+    <p><strong>Date:</strong> @event.Date.ToShortDateString()</p>
+    <p><strong>Location:</strong> @event.Location</p>
+    <a href="/register/@event.Id">Register</a>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private EventModel? event;
+
+    protected override async Task OnInitializedAsync()
+    {
+        event = await EventService.GetEventByIdAsync(Id);
+        if (event == null)
+        {
+            NavigationManager.NavigateTo("/notfound");
+        }
+        else
+        {
+            Session.SelectedEvent = event;
+        }
+    }
+}
