@@ -1,0 +1,20 @@
+@page "/attendance/{EventId:int}"
+@inject UserSessionService Session
+
+<h3>Attendees for Event @EventId</h3>
+<ul>
+    @foreach (var name in attendees)
+    {
+        <li>@name</li>
+    }
+</ul>
+
+@code {
+    [Parameter] public int EventId { get; set; }
+    private List<string> attendees = new();
+
+    protected override void OnInitialized()
+    {
+        attendees = Session.GetAttendees(EventId);
+    }
+}
